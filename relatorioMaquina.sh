@@ -16,14 +16,13 @@
 
 # Variaveis
 MAQUINA=$(uname -a | cut -f 1,2 -d " ")
-DATA=$(date | sed "s/AM/$(date +%:::z)/" | cut -f -5,7 -d " ") 
-#DATA=$(date +%x.%X | sed "s/\./ /g" | cut -f 1,2 -d " ")
-
+DATA=$(date | sed "s/AM/$(date +%:::z)/" | cut -f -5,7 -d " ") #DATA=$(date +%x.%X | sed "s/\./ /g" | cut -f 1,2 -d " ")
 ATIVA=$(uptime -s)
 KERNEL=$(uname -a | cut -f 3 -d " ")
 CPU=$(lscpu | grep "CPU(s):" | head -n 1 | sed "s/ //g" | cut -d ":" -f 2)
 MODELOCPU=$(cat /proc/cpuinfo | grep -i "model name" | uniq | sed "s/ / /g" | cut -f 2 -d ":")
 MEMORIA=$(cat /proc/meminfo | numfmt --field 2 --from-unit=Ki --to-unit=Mi | sed 's/ kB/Mb/g' | sed "s/ //g" | cut -d ":" -f 2 | head -n 1)
+SISTEMA=$(df -h | egrep -v "tmpfs|udev") # File Globbing
 
 # Apresentacao
 clear
@@ -47,4 +46,4 @@ echo -e "\033[01;37m # Modelo da CPU:$MODELOCPU  \033[01;00m"
 echo -e "\033[01;37m # Memoria Total: $MEMORIA \033[01;00m"
 
 # Particoes
-echo -e "\n\033[01;36m# Particoes:\033[01;00m\n\033[01;33m$(df -h)\033[01;00m"
+echo -e "\n\033[01;36m# Particoes:\033[01;00m\n\033[01;33m# $SISTEMA\033[01;00m"
